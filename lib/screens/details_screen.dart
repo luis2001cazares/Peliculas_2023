@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas_2023/models/models.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key});
+  final Movie movie;
+
+  const DetailsScreen({Key? key, required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //Recibir argumentos de otra pantalla
-    final String movie =
-        ModalRoute.of(context)?.settings.arguments.toString() ?? 'Sin nombre';
-    return const Scaffold(
+    return Scaffold(
       body: CustomScrollView(
-        //Widget con comportamientos predefinidos al scroll
         slivers: [
-          _CustomAppBar(),
+          _CustomAppBar(movie: movie),
           SliverList(
             delegate: SliverChildListDelegate.fixed(
               [
-                _PosterAndTitle(),
+                _PosterAndTitle(movie: movie),
                 _Overview(),
                 RepartoSlider(),
-                
-
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -31,7 +28,9 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class _CustomAppBar extends StatelessWidget {
-  const _CustomAppBar({super.key});
+  final Movie movie;
+
+  const _CustomAppBar({Key? key, required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +39,21 @@ class _CustomAppBar extends StatelessWidget {
       expandedHeight: 200,
       floating: false,
       pinned: true,
-      //wIDGET PARA QUE SE AGUSTE AL TAMAÑO
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
-        //Eliminar padding
         titlePadding: EdgeInsets.all(0),
         title: Container(
           width: double.infinity,
           alignment: Alignment.bottomCenter,
           color: Colors.black12,
-          child: const Text(
-            'movie.title',
+          child: Text(
+            movie.title,
             style: TextStyle(fontSize: 18),
           ),
         ),
         background: FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
-          image: AssetImage('assets/no-image.jpg'),
+          image: NetworkImage(movie.fullPosterImg),
         ),
       ),
     );
@@ -64,7 +61,9 @@ class _CustomAppBar extends StatelessWidget {
 }
 
 class _PosterAndTitle extends StatelessWidget {
-  const _PosterAndTitle({super.key});
+  final Movie movie;
+
+  const _PosterAndTitle({Key? key, required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,23 +76,23 @@ class _PosterAndTitle extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('assets/no-image.jpg'),
-              image: AssetImage('assets/no-image.jpg'),
+              image: NetworkImage(movie.fullPosterImg),
               height: 250,
             ),
           ),
           SizedBox(width: 20),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'movie.title',
+                  movie.title,
                   style: TextStyle(fontSize: 30),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
                 Text(
-                  'movie.titleOriganl',
+                  movie.originalTitle,
                   style: TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -108,42 +107,43 @@ class _PosterAndTitle extends StatelessWidget {
                     ),
                     SizedBox(width: 5),
                     Text(
-                      'movie.voteAverage',
+                      movie.voteAverage.toString(), // Convertir a cadena
                       style: TextStyle(fontSize: 15),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
 
-
 class _Overview extends StatelessWidget {
-  const _Overview({super.key});
+  const _Overview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:EdgeInsets.symmetric(horizontal: 20,
-       vertical: 10
-       ),
-       child: Text('Deserunt amet laboris laborum cillum adipisicing Lorem sint ullamco velit labore consequat. Aliquip pariatur irure quis eiusmod consectetur amet mollit ipsum. Nostrud pariatur minim veniam dolor consectetur minim nostrud mollit. Nostrud consequat laborum deserunt nostrud ea elit mollit nulla voluptate ipsum duis aliqua enim ea. Nulla fugiat sint irure ad sint enim enim culpa. Dolore dolor sunt velit pariatur duis elit est culpa veniam dolor eiusmod deserunt. Adipisicing proident ipsum quis exercitation amet laborum veniam ullamco reprehenderit aliquip.',
-       textAlign: TextAlign.justify,
-       style: TextStyle(fontSize: 15),
-       ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 10,
+      ),
+      child: Text(
+        'Deserunt amet laboris laborum cillum adipisicing Lorem sint ullamco velit labore consequat. Aliquip pariatur irure quis eiusmod consectetur amet mollit ipsum. Nostrud pariatur minim veniam dolor consectetur minim nostrud mollit. Nostrud consequat laborum deserunt nostrud ea elit mollit nulla voluptate ipsum duis aliqua enim ea. Nulla fugiat sint irure ad sint enim enim culpa. Dolore dolor sunt velit pariatur duis elit est culpa veniam dolor eiusmod deserunt. Adipisicing proident ipsum quis exercitation amet laborum veniam ullamco reprehenderit aliquip.',
+        textAlign: TextAlign.justify,
+        style: TextStyle(fontSize: 15),
+      ),
     );
   }
 }
 
 class RepartoSlider extends StatelessWidget {
-  const RepartoSlider({super.key});
+  const RepartoSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +155,7 @@ class RepartoSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               'Reparto',
@@ -171,7 +171,7 @@ class RepartoSlider extends StatelessWidget {
               itemCount: 20,
               itemBuilder: (_, int index) => _RepartoPoster(),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -179,21 +179,21 @@ class RepartoSlider extends StatelessWidget {
 }
 
 class _RepartoPoster extends StatelessWidget {
-  const _RepartoPoster({super.key});
+  const _RepartoPoster({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 130,
       height: 210,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'details', arguments: ''),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: const FadeInImage(
+              child: FadeInImage(
                 placeholder: AssetImage('assets/no-image.jpg'),
                 image: AssetImage('assets/no-image.jpg'),
                 width: 130,
@@ -201,13 +201,13 @@ class _RepartoPoster extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 5),
-          const Text(
+          SizedBox(height: 5),
+          Text(
             'Aliqua amet qui elit ad irure anim ullamco sit deserunt nisi eiusmod excepteur nisi sunt.',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-          )
+          ),
         ],
       ),
     );

@@ -1,11 +1,12 @@
+// movie_slider.dart
 import 'package:flutter/material.dart';
-
-import '../models/movie.dart';
+import 'package:peliculas_2023/models/models.dart';
 
 class MovieSlider extends StatelessWidget {
   final List<Movie> movies;
   final String? title;
-  const MovieSlider({super.key, required this.movies, this.title});
+
+  const MovieSlider({Key? key, required this.movies, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,8 @@ class MovieSlider extends StatelessWidget {
 
 class _MoviePoster extends StatelessWidget {
   final Movie movie;
-  const _MoviePoster({super.key, required this.movie});
+
+  const _MoviePoster({Key? key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +52,22 @@ class _MoviePoster extends StatelessWidget {
       width: 130,
       height: 210,
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'details', arguments: ''),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/no-image.jpg'),
-                image: NetworkImage(movie.fullPosterImg),
-                width: 110,
-                height: 140,
-              ),
-            ),
+      child: GestureDetector(
+        onTap: () {
+          // Navegar a la pantalla de detalles y pasar la película como argumento
+          Navigator.pushNamed(context, 'details', arguments: movie);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: FadeInImage(
+            placeholder: AssetImage('assets/no-image.jpg'),
+            image: NetworkImage(movie.fullPosterImg),
+            width: 110,
+            height: 140,
           ),
-          const SizedBox(height: 5),
-          Text(
-            movie.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          )
-        ],
+        ),
       ),
     );
   }
 }
+

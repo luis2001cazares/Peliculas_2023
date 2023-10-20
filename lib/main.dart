@@ -1,13 +1,14 @@
+// main.dart
 import 'package:flutter/material.dart';
+import 'package:peliculas_2023/models/models.dart';
 import 'package:peliculas_2023/providers/movies_provider.dart';
 import 'package:peliculas_2023/screens/screens.dart';
 import 'package:provider/provider.dart';
 
-
 void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
-  const AppState({super.key});
+  const AppState({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +19,13 @@ class AppState extends StatelessWidget {
           lazy: false,
         )
       ],
-      child: MyApp(),
-      );
+      child: const MyApp(),
+    );
   }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,12 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home': (_) => HomeScreen(),
-        'details': (_) => DetailsScreen(),
+        'details': (context) {
+          final movie = ModalRoute.of(context)?.settings.arguments as Movie;
+          return DetailsScreen(movie: movie);
+        },
       },
     );
   }
 }
+
