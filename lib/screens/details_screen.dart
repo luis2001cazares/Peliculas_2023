@@ -16,7 +16,7 @@ class DetailsScreen extends StatelessWidget {
             delegate: SliverChildListDelegate.fixed(
               [
                 _PosterAndTitle(movie: movie),
-                _Overview(),
+                _Overview(movie: movie,),
                 RepartoSlider(),
               ],
             ),
@@ -124,7 +124,8 @@ class _PosterAndTitle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
-  const _Overview({Key? key}) : super(key: key);
+  final Movie movie;
+  const _Overview({Key? key, required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +135,7 @@ class _Overview extends StatelessWidget {
         vertical: 10,
       ),
       child: Text(
-        'Deserunt amet laboris laborum cillum adipisicing Lorem sint ullamco velit labore consequat. Aliquip pariatur irure quis eiusmod consectetur amet mollit ipsum. Nostrud pariatur minim veniam dolor consectetur minim nostrud mollit. Nostrud consequat laborum deserunt nostrud ea elit mollit nulla voluptate ipsum duis aliqua enim ea. Nulla fugiat sint irure ad sint enim enim culpa. Dolore dolor sunt velit pariatur duis elit est culpa veniam dolor eiusmod deserunt. Adipisicing proident ipsum quis exercitation amet laborum veniam ullamco reprehenderit aliquip.',
+        movie.overview,
         textAlign: TextAlign.justify,
         style: TextStyle(fontSize: 15),
       ),
